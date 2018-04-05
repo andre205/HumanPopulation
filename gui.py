@@ -63,13 +63,19 @@ class Window(QMainWindow):
 
 
     def start(self, event):
-        y0 = float(self.tbx1.text())
-        t = np.linspace(0,20)
+        try:
+            y0 = float(self.tbx1.text())
+        except:
+            y0 = 1
+
+
+        t = np.linspace(0,40)
         y = odeint(model,y0,t)
+
         plt.plot(t,y)
         plt.xlabel('time')
         plt.ylabel('y(t)')
-        #plt.show()
+
         plt.savefig('out.png')
         update_image(self)
 
@@ -105,8 +111,6 @@ def model(y,t):
     k = 0.3
     dydt = -k * y
     return dydt
-
-
 
 if __name__ == '__main__':
     run()
