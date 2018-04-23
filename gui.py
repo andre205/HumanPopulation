@@ -108,8 +108,8 @@ def update_image(self):
 
 # function that returns dy/dt
 def model(y,t):
-    k = 0.3
-    dydt = -k * y
+    k = 1
+    dydt = k * (1-(y/1000)) * y
     return dydt
 
 if __name__ == '__main__':
