@@ -29,7 +29,7 @@ class Window(QMainWindow):
     resized = pyqtSignal()
     def __init__(self):
         super(Window, self).__init__()
-        self.setGeometry(800, 300, 900, 500)
+        self.setGeometry(800, 320, 900, 500)
         self.setWindowTitle('Population Simulator 1.0')
         self.init_ui()
 
@@ -162,9 +162,10 @@ def update_image(self):
     self.pop_img.setPixmap(self.pixmap)
     # self.pop_img.scaledToWidth(200)
 
-# function that returns dy/dt
-def model(a,b,p,q,y,x,t):
-    dydt =
+# # function that returns dy/dt
+def model(y,t):
+    k = 1
+    dydt = k * (1-(y/1000)) * y
     return dydt
 
 if __name__ == '__main__':
