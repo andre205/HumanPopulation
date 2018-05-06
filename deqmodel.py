@@ -8,7 +8,6 @@ b = 0.1
 c = 1.5
 d = 0.75
 def dX_dt(X, t=0):
-    """ Return the growth rate of fox and rabbit populations. """
     return array([ a*X[0] -   b*X[0]*X[1] , -c*X[1] + d*b*X[0]*X[1] ])
 
 X_f0 = array([0. , 0.])
@@ -36,13 +35,13 @@ X0 = array([10, 5])
 X, infodict = integrate.odeint(dX_dt, X0, t, full_output=True)
 
 
-rabbits, foxes = X.T
+pop_a, pop_b = X.T
 f1 = p.figure()
-p.plot(t, rabbits, 'r-', label='Rabbits')
-p.plot(t, foxes  , 'b-', label='Foxes')
+p.plot(t, pop_a, 'r-', label='pop_a')
+p.plot(t, pop_b  , 'b-', label='pop_b')
 p.grid()
 p.legend(loc='best')
 p.xlabel('time')
 p.ylabel('population')
-p.title('Evolution of fox and rabbit populations')
-f1.savefig('rabbits_and_foxes_1.png')
+p.title('Evolution of a and b populations')
+f1.savefig('pop_a_and_pop_b_1.png')
