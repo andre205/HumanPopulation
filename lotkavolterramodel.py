@@ -51,7 +51,7 @@ def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
 
     f1 = pl.figure()
     pl.plot(t, pop_a, 'r-', label='X')
-    pl.plot(t, pop_b  , 'b-', label='Y')
+    pl.plot(t, pop_b, 'b-', label='Y')
     pl.grid()
     pl.legend(loc='best')
     pl.xlabel('time')
@@ -61,4 +61,45 @@ def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
 
     f1.savefig('img/lvimg.png')
 
-# lv_plot(1.1,0.34,1.32,.55,20,15,0,10,1000)
+
+    values  = linspace(0.3, 0.9, 5)                          # position of X0 between X_f0 and X_f1
+    vcolors = pl.cm.autumn_r(linspace(0.3, 1., len(values)))  # colors for each trajectory
+
+    f2 = pl.figure()
+
+    #-------------------------------------------------------
+    # plot trajectories
+    for v, col in zip(values, vcolors):
+        X0 = v * X_f1
+        X = integrate.odeint( dX_dt, X0, t)
+        pl.plot( X[:,0], X[:,1], lw=3.5*v, color=col, label='X0=(%.f, %.f)' % ( X0[0], X0[1]) )
+
+    #-------------------------------------------------------
+    # define a grid and compute direction at each point
+    ymax = pl.ylim(ymin=0)[1]                        # get axis limits
+    xmax = pl.xlim(xmin=0)[1]
+    nb_points   = 20
+
+    x = linspace(0, xmax, nb_points)
+    y = linspace(0, ymax, nb_points)
+
+    X1 , Y1  = meshgrid(x, y)                       # create a grid
+    DX1, DY1 = dX_dt([X1, Y1])                      # compute growth rate on the gridt
+    M = (hypot(DX1, DY1))                           # Norm of the growth rate
+    M[ M == 0] = 1.                                 # Avoid zero division errors
+    DX1 /= M                                        # Normalize each arrows
+    DY1 /= M
+
+    #-------------------------------------------------------
+    # Drow direction fields, using matplotlib 's quiver function
+    # I choose to plot normalized arrows and to use colors to give information on
+    # the growth speed
+    pl.title('Phase Plane')
+    Q = pl.quiver(X1, Y1, DX1, DY1, M, pivot='mid', cmap=pl.cm.jet)
+    pl.xlabel('X Population')
+    pl.ylabel('Y Population')
+    pl.legend()
+    pl.grid()
+    pl.xlim(0, xmax)
+    pl.ylim(0, ymax)
+    f2.savefig('img/ppimg.png')

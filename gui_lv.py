@@ -4,12 +4,10 @@ import json
 import matplotlib
 #import keyboard
 
-from PyQt5.QtCore import QCoreApplication, Qt, QTimer, pyqtSignal
-from PyQt5.QtGui import QIcon, QPixmap, QFont, QImage
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QPushButton, QStyleFactory
-from PyQt5.QtWidgets import QAction, QMessageBox, QCheckBox, QProgressBar, QLabel, QComboBox
-from PyQt5.QtWidgets import QFileDialog, QLineEdit
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+
 
 import cv2
 import json
@@ -29,6 +27,7 @@ class Window(QMainWindow):
         super(Window, self).__init__()
         self.setGeometry(800, 300, 900, 500)
         self.setWindowTitle('Population Simulator 1.0')
+        self.toggle = True
         self.init_ui()
 
     def init_ui(self):
@@ -124,11 +123,11 @@ class Window(QMainWindow):
         self.label_t.resize(200, 30)
         self.label_t.move(700, 380)
 
-        self.start_button = QPushButton('START', self)
+        self.start_button = QPushButton('Update', self)
         self.start_button.move(650, 450)
         self.start_button.clicked.connect(self.start)
 
-        self.reset_button = QPushButton('RESET', self)
+        self.reset_button = QPushButton('Phase Plane', self)
         self.reset_button.move(775, 450)
         self.reset_button.clicked.connect(self.reset)
 
@@ -153,21 +152,47 @@ class Window(QMainWindow):
             user_q = .15
             user_t = 20
 
-        # lvm.lv_plot(a,p,b,q,X,Y,t0,tf,tdi)
         lvm.lv_plot(user_a,user_p,user_b,user_q,user_x0,user_y0,0,user_t,1000)
 
-        update_image(self)
+        self.update(event)
 
     def resizeEvent(self, event):
         self.resized.emit()
         return super(Window, self).resizeEvent(event)
 
     def reset(self, event):
-        image_filepath = 'img/white.png'
-        self.pixmap = QPixmap(image_filepath)
-        self.pop_img.setPixmap(self.pixmap)
-        self.pop_img.resize(600,500)
-        
+        if self.toggle:
+            image_filepath = 'img/ppimg.png'
+            self.pixmap = QPixmap(image_filepath)
+            self.pop_img.setPixmap(self.pixmap)
+            self.pop_img.resize(600,500)
+            self.reset_button.setText("Model")
+            self.toggle = False
+        else:
+            image_filepath = 'img/lvimg.png'
+            self.pixmap = QPixmap(image_filepath)
+            self.pop_img.setPixmap(self.pixmap)
+            self.pop_img.resize(600,500)
+            self.reset_button.setText("Phase Plane")
+            self.toggle = True
+
+    def update(self, event):
+        if self.toggle:
+            image_filepath = 'img/lvimg.png'
+            self.pixmap = QPixmap(image_filepath)
+            self.pop_img.setPixmap(self.pixmap)
+            self.pop_img.resize(600,500)
+            self.reset_button.setText("Phase Plane")
+            self.toggle = True
+        else:
+            image_filepath = 'img/ppimg.png'
+            self.pixmap = QPixmap(image_filepath)
+            self.pop_img.setPixmap(self.pixmap)
+            self.pop_img.resize(600,500)
+            self.reset_button.setText("Model")
+            self.toggle = False
+
+
 
     def update_pop_img(self):
         image_filepath = 'img/lvimg.png'
@@ -180,19 +205,6 @@ def run():
     GUI = Window()
     sys.exit(app.exec_())
 
-
-def update_image(self):
-    image_filepath = 'img/lvimg.png'
-    self.pixmap = QPixmap(image_filepath)
-    #self.pixmap = self.pixmap.scaled(450, 450)
-    self.pop_img.setPixmap(self.pixmap)
-    # self.pop_img.scaledToWidth(200)
-
-# # function that returns dy/dt
-def model(y,t):
-    k = 1
-    dydt = k * (1-(y/1000)) * y
-    return dydt
 
 if __name__ == '__main__':
     run()
