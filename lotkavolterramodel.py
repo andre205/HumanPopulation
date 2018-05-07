@@ -31,27 +31,17 @@ def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
     X_f0 = array([0. , 0.])
     X_f1 = array([b/(q*p), a/p])
 
-    all(dX_dt(X_f0) == zeros(2) ) and all(dX_dt(X_f1) == zeros(2))
-
-    A_f0 = d2X_dt2(X_f0)
-    A_f1 = d2X_dt2(X_f1)
-
-    #EIGENVALS  +/- sqrt(b*a).j
-    lambda1, lambda2 = linalg.eigvals(A_f1)
-    #PERIOD
-    T_f1 = 2*pi/abs(lambda1)
-
     #TIME
     t = linspace(t0, tf, tdi)
     #INITIAL CONDITIONS
     X0 = array([X, Y])
     X = integrate.odeint(dX_dt, X0, t)
 
-    pop_a, pop_b = X.T
+    pop_x, pop_y = X.T
 
     f1 = pl.figure()
-    pl.plot(t, pop_a, 'r-', label='X')
-    pl.plot(t, pop_b, 'b-', label='Y')
+    pl.plot(t, pop_x, 'r-', label='X')
+    pl.plot(t, pop_y, 'b-', label='Y')
     pl.grid()
     pl.legend(loc='best')
     pl.xlabel('time')
@@ -61,28 +51,28 @@ def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
 
     f1.savefig('img/lvimg.png')
 
-
-    values  = linspace(0.3, 0.9, 5)
-    vcolors = pl.cm.autumn_r(linspace(0.3, 1., len(values)))
+    v = linspace(0.25, 1, 5)
+    vc = pl.cm.binary(linspace(0.25, 1, len(v)))
 
     f2 = pl.figure()
 
-    for v, col in zip(values, vcolors):
+    for v, col in zip(v, vc):
         X0 = v * X_f1
-        X = integrate.odeint( dX_dt, X0, t)
-        pl.plot( X[:,0], X[:,1], lw=3.5*v, color=col, label='X0=(%.f, %.f)' % ( X0[0], X0[1]) )
+        X = integrate.odeint(dX_dt, X0, t)
+        pl.plot(X[:,0], X[:,1], lw=3*v, color=col, label='X0=(%.f, %.f)' % ( X0[0], X0[1]) )
 
+    #find max values
     ymax = pl.ylim(ymin=0)[1]
     xmax = pl.xlim(xmin=0)[1]
+    #mesh grid density
     nb_points   = 20
-
     x = linspace(0, xmax, nb_points)
     y = linspace(0, ymax, nb_points)
 
     X1 , Y1  = meshgrid(x, y)
     DX1, DY1 = dX_dt([X1, Y1])
     M = (hypot(DX1, DY1))
-    M[ M == 0] = 1.
+    M[M == 0] = 1.
     DX1 /= M
     DY1 /= M
 

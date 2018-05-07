@@ -192,8 +192,6 @@ class Window(QMainWindow):
             self.reset_button.setText("Model")
             self.toggle = False
 
-
-
     def update_pop_img(self):
         image_filepath = 'img/lvimg.png'
         self.pixmap = QPixmap(image_filepath)
