@@ -31,6 +31,16 @@ def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
     X_f0 = array([0. , 0.])
     X_f1 = array([b/(q*p), a/p])
 
+    all(dX_dt(X_f0) == zeros(2) ) and all(dX_dt(X_f1) == zeros(2))
+
+    A_f0 = d2X_dt2(X_f0)
+    A_f1 = d2X_dt2(X_f1)
+
+    #EIGENVALS  +/- sqrt(b*a).j
+    lambda1, lambda2 = linalg.eigvals(A_f1)
+    #PERIOD
+    T_f1 = 2*pi/abs(lambda1)
+
     #TIME
     t = linspace(t0, tf, tdi)
     #INITIAL CONDITIONS
@@ -85,3 +95,5 @@ def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
     pl.xlim(0, xmax)
     pl.ylim(0, ymax)
     f2.savefig('img/ppimg.png')
+
+    return T_f1

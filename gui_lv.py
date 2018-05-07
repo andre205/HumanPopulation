@@ -123,6 +123,11 @@ class Window(QMainWindow):
         self.label_t.resize(200, 30)
         self.label_t.move(700, 380)
 
+        self.label_pd = QLabel('Period: ', self)
+        self.label_pd.setFont(boldFont)
+        self.label_pd.resize(200, 30)
+        self.label_pd.move(700, 410)
+
         self.start_button = QPushButton('Update', self)
         self.start_button.move(650, 450)
         self.start_button.clicked.connect(self.start)
@@ -152,7 +157,8 @@ class Window(QMainWindow):
             user_q = .15
             user_t = 20
 
-        lvm.lv_plot(user_a,user_p,user_b,user_q,user_x0,user_y0,0,user_t,1000)
+        t_pd = lvm.lv_plot(user_a,user_p,user_b,user_q,user_x0,user_y0,0,user_t,1000)
+        self.label_pd.setText("Period: " + str(t_pd)[:5] )
 
         self.update(event)
 
