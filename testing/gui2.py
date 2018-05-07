@@ -132,7 +132,7 @@ class Window(QMainWindow):
         plt.xlabel('time')
         plt.ylabel('y(t)')
 
-        plt.savefig('out.png')
+        plt.savefig('img/out.png')
         update_image(self)
 
     def resizeEvent(self, event):
@@ -144,7 +144,7 @@ class Window(QMainWindow):
         self.update_pop_img()
 
     def update_pop_img(self):
-        image_filepath = 'out_img.png'
+        image_filepath = 'img/out_img.png'
         self.pixmap = QPixmap(image_filepath)
         self.pop_img.setPixmap(self.pixmap)
         self.pop_img.resize(600,500)
@@ -156,7 +156,7 @@ def run():
 
 
 def update_image(self):
-    image_filepath = 'out.png'
+    image_filepath = 'img/out.png'
     self.pixmap = QPixmap(image_filepath)
     #self.pixmap = self.pixmap.scaled(450, 450)
     self.pop_img.setPixmap(self.pixmap)
