@@ -21,11 +21,11 @@ def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
     cp1 = array([0. , 0.])
     cp2 = array([b/q, a/p])
 
-    A_f0 = Jac(cp1) #these are just 0
-    A_f1 = Jac(cp2)
+    cp1_sol = Jac(cp1) #these are just 0
+    cp2_sol = Jac(cp2)
 
     #EIGENVALS  +/- i*sqrt(b*a)
-    lambda1, lambda2 = linalg.eigvals(A_f1)
+    lambda1, lambda2 = linalg.eigvals(cp2_sol)
     #PERIOD
     pd = 2*pi/abs(lambda1)
 
