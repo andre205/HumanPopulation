@@ -8,7 +8,7 @@ import vals
 def dX_dt(X, t=0):
     return array([ vals.a*X[0] - vals.p*X[0]*X[1] , -vals.b*X[1] + vals.q*X[0]*X[1] ])
 #jacobian
-def d2X_dt2(X, t=0):
+def Jac(X, t=0):
     return array([ [vals.a - vals.p * X[1], -vals.p*X[0] ], [ vals.q*X[1] , -vals.b +vals.q*X[0] ] ])
 
 def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
@@ -21,8 +21,8 @@ def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
     X_f0 = array([0. , 0.])
     X_f1 = array([b/q, a/p])
 
-    A_f0 = d2X_dt2(X_f0)
-    A_f1 = d2X_dt2(X_f1)
+    A_f0 = Jac(X_f0)
+    A_f1 = Jac(X_f1)
 
     #EIGENVALS  +/- i*sqrt(b*a)
     lambda1, lambda2 = linalg.eigvals(A_f1)
