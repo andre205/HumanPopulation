@@ -1,23 +1,13 @@
 import sys
-import os
-import json
 import matplotlib
-#import keyboard
+import numpy as np
+import matplotlib.pyplot as plt
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-
-import cv2
-import json
-import requests
-import numpy as np
-import os, sys, time
-from shutil import copyfile
-
 from scipy.integrate import odeint
-import matplotlib.pyplot as plt
 
 import lotkavolterramodel as lvm
 

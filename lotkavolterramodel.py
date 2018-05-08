@@ -9,7 +9,7 @@ def dX_dt(X, t=0):
     return array([ vals.a*X[0] - vals.p*X[0]*X[1] , -vals.b*X[1] + vals.q*X[0]*X[1] ])
 #jacobian
 def d2X_dt2(X, t=0):
-    return array([ [vals.a-vals.p*X[1], -vals.p*X[0] ], [ vals.p*vals.q*X[1] , -vals.b +vals.p*vals.q*X[0] ] ])
+    return array([ [vals.a - vals.p * X[1], -vals.p*X[0] ], [ vals.q*X[1] , -vals.b +vals.q*X[0] ] ])
 
 def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
 
@@ -19,9 +19,10 @@ def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
     vals.q = q
 
     X_f0 = array([0. , 0.])
-    X_f1 = array([b/(q*p), a/p])
+    X_f1 = array([b/q, a/p])
 
     all(dX_dt(X_f0) == zeros(2) ) and all(dX_dt(X_f1) == zeros(2))
+
     A_f0 = d2X_dt2(X_f0)
     A_f1 = d2X_dt2(X_f1)
 
@@ -64,7 +65,7 @@ def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
     ymax = pl.ylim(ymin=0)[1]
     xmax = pl.xlim(xmin=0)[1]
     #mesh grid density
-    nb_points   = 20
+    nb_points = 20
     x = linspace(0, xmax, nb_points)
     y = linspace(0, ymax, nb_points)
 
