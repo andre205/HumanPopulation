@@ -21,8 +21,6 @@ def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
     X_f0 = array([0. , 0.])
     X_f1 = array([b/q, a/p])
 
-    all(dX_dt(X_f0) == zeros(2) ) and all(dX_dt(X_f1) == zeros(2))
-
     A_f0 = d2X_dt2(X_f0)
     A_f1 = d2X_dt2(X_f1)
 
