@@ -18,11 +18,11 @@ def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
     vals.b = b
     vals.q = q
 
-    X_f0 = array([0. , 0.])
-    X_f1 = array([b/q, a/p])
+    cp1 = array([0. , 0.])
+    cp2 = array([b/q, a/p])
 
-    A_f0 = Jac(X_f0)
-    A_f1 = Jac(X_f1)
+    A_f0 = Jac(cp1) #these are just 0
+    A_f1 = Jac(cp2)
 
     #EIGENVALS  +/- i*sqrt(b*a)
     lambda1, lambda2 = linalg.eigvals(A_f1)
@@ -55,7 +55,7 @@ def lv_plot(a,p,b,q,X,Y,t0,tf,tdi):
     f2 = pl.figure()
 
     for v, col in zip(v, vc):
-        X0 = v * X_f1
+        X0 = v * cp2
         X = integrate.odeint(dX_dt, X0, t)
         pl.plot(X[:,0], X[:,1], lw=3*v, color=col, label='X0=(%.f, %.f)' % ( X0[0], X0[1]) )
 
